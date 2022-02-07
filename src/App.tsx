@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import '@shopify/polaris/build/esm/styles.css';
+import { FocalCropApp } from './components';
+import enTranslations from '@shopify/polaris/locales/en.json';
+import { AppProvider } from '@shopify/polaris';
+
+const loadLocalStorage = () => {
+  const localImagesJSON = localStorage.getItem("imagesJSON");
+  const localActiveImageString = localStorage.getItem("activeImageKey");
+  const localImages = localImagesJSON ? JSON.parse(localImagesJSON) : {};
+  const localActiveImage = localActiveImageString ? localActiveImageString : "";
+  return {localImages, localActiveImage}
+}
 
 function App() {
+  const {localImages, localActiveImage} = loadLocalStorage();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppProvider i18n={enTranslations}>
+      <FocalCropApp localImages={localImages} localActiveImage={localActiveImage} />
+    </AppProvider>
+    
   );
 }
 

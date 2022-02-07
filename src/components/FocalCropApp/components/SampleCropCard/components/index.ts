@@ -1,0 +1,1 @@
+export {CroppedImage} from './CroppedImage';
