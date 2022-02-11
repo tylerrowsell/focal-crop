@@ -14,8 +14,8 @@ export interface CroppedImageProps {
 export function CroppedImage({image, name, requestedHeight, requestedWidth}: CroppedImageProps) {
 
   const imageStyles = {
-    // width: requestedWidth,
-    // height: requestedHeight,
+    width: requestedWidth,
+    height: requestedHeight,
     maxWidth: '100%',
     maxHeight: '100%',
   }
