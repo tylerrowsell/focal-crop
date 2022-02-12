@@ -2,36 +2,37 @@ import React, { useReducer, useState } from 'react';
 import { Layout, Page } from '@shopify/polaris';
 import { ActiveImageProperties, ImagesModal, OriginalImageCard, SampleCropCard } from './components';
 import { useImages } from './hooks/useImages';
-import { Coordinate, ImagesObject, Region } from './types';
+import { Coordinate, CropProp, ImagesObject } from './types';
 import { FocalImage } from './objects';
+import { useSizes } from './hooks/useSizes';
 
 interface FocalCropAppProps {
   localImages: ImagesObject
   localActiveImage: string
+  localSizes: CropProp[]
 }
 
-export function FocalCropApp({localImages, localActiveImage}: FocalCropAppProps) {
+export function FocalCropApp({localImages, localActiveImage, localSizes}: FocalCropAppProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const [modalOpen, setModalOpen] = useState(false);
-  const {addImage, updateImage, removeImage, images, activeImage, setActiveImage, loading} = useImages(localImages, localActiveImage, forceUpdate);
+  const {addImage, updateImage, removeImage, images, activeImage, setActiveImage, loading} = useImages(localImages, localActiveImage);
+  const {sizes, addSize, removeSize} = useSizes(localSizes, forceUpdate);
 
-
-  const handleImageUpdate = (focalPoint: Coordinate, safeZone: Region, strictSafeZone: Boolean) => {
-    updateImage(activeImage, focalPoint, safeZone, strictSafeZone);
+  const handleImageUpdate = (focalPoint: Coordinate) => {
+    updateImage(activeImage, focalPoint);
   }
 
-  const hasImages = Object.keys(images).length > 0
   const image = new FocalImage(images[activeImage]);
-  const propertiesMarkup = hasImages && <ActiveImageProperties image={image} updateImage={handleImageUpdate} />
+  const propertiesMarkup = <ActiveImageProperties image={image} updateImage={handleImageUpdate} />
 
   return <Page fullWidth>
       <Layout>
         <Layout.Section>
-          <SampleCropCard image={image} />
+          { image && <SampleCropCard image={image} sizes={sizes} addSize={addSize} removeSize={removeSize} /> }
         </Layout.Section>
         <Layout.Section secondary>
-          <OriginalImageCard image={image} setModalOpen={setModalOpen} />
+          <OriginalImageCard image={image} setModalOpen={setModalOpen} updateImage={handleImageUpdate} />
           {propertiesMarkup}
         </Layout.Section>
       </Layout>

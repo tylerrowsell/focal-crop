@@ -1,31 +1,36 @@
 import React from 'react';
 import { Card } from '@shopify/polaris';
 import { FocalImage } from '../../../../objects';
+import { CropProp } from '../../../../types';
 
 import './CroppedImage.css';
+import { min } from 'lodash';
 
-export interface CroppedImageProps {
+export interface CroppedImageProps extends CropProp {
   image: FocalImage;
-  name: string;
-  requestedWidth: number;
-  requestedHeight: number;
+  removeSize: () => void;
 }
 
-export function CroppedImage({image, name, requestedHeight, requestedWidth}: CroppedImageProps) {
+export function CroppedImage({image, name, requestedHeight, requestedWidth, removeSize}: CroppedImageProps) {
 
   const imageStyles = {
     width: requestedWidth,
     height: requestedHeight,
     maxWidth: '100%',
-    maxHeight: '100%',
   }
   const{left, top, width, height} = image.crop(requestedWidth, requestedHeight);
 
   const title = `${name}: ${requestedWidth}x${requestedHeight}`
-  const imageUrl = `${image.url}?width=${width}&height=${height}&crop=region&crop_left=${left}&crop_top=${top}&crop_width=${width}&crop_height=${height}`
+  const imageWidth = min([requestedWidth, width]) || 0;
+  const imageHeight = min([requestedHeight, height]) || 0;
+  const imageUrl = `${image.url}?width=${imageWidth}&height=${imageHeight}&crop=region&crop_left=${left}&crop_top=${top}&crop_width=${width}&crop_height=${height}`
 
-  return <Card title={title}>
-          <Card.Section>
+  const actions = [{
+    content: 'Remove Size',
+    onAction: removeSize
+  }]
+
+    return  <Card.Section title={title} actions={actions}>
               <img src={imageUrl} className="cropped-image" style={imageStyles} alt={image.key} />
               <p>
                 Requested Width: <b>{requestedWidth}</b> | 
@@ -35,6 +40,5 @@ export function CroppedImage({image, name, requestedHeight, requestedWidth}: Cro
                 Crop Left:  <b>{left}</b> | 
                 Crop Top: <b>{top}</b> 
               </p>
-           </Card.Section>
-        </Card>
+            </Card.Section>
 }

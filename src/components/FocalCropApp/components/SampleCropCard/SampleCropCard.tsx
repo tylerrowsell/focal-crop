@@ -1,19 +1,38 @@
-import React from 'react';
+import { Card } from '@shopify/polaris';
+import React, { useState } from 'react';
 import { FocalImage } from '../../objects';
-import { CroppedImage } from './components';
+import { CropProp } from '../../types';
+import { CroppedImage, SizeModal } from './components';
 
 export interface SampleCropCardProps {
   image: FocalImage;
+  sizes: CropProp[];
+  addSize: (value: CropProp) => void;
+  removeSize: (value: number) => void;
 }
 
-export function SampleCropCard({image}: SampleCropCardProps) {
+export function SampleCropCard({image, sizes, addSize, removeSize}: SampleCropCardProps) {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const imageMarkup = sizes.map((size, index) => {
+    return <CroppedImage 
+          name={size.name} 
+          image={image} 
+          key={`croppedImage-${index}`}
+          requestedWidth={size.requestedWidth} 
+          requestedHeight={size.requestedHeight}
+          removeSize={() => removeSize(index)} />
+  });
+
+  const primaryAction = 
+    {
+     content: 'Add Size',
+     onAction: () => {setModalOpen(true)}
+    }
+
   return <>
-    <CroppedImage name="1:1 Aspect Ratio" image={image} requestedWidth={200} requestedHeight={200} />
-    <CroppedImage name="1:1 Aspect Ratio" image={image} requestedWidth={500} requestedHeight={500} />
-    <CroppedImage name="Hero Image" image={image} requestedWidth={1000} requestedHeight={200} />
-    <CroppedImage name="Hero Image" image={image} requestedWidth={1000} requestedHeight={300} />
-    <CroppedImage name="Hero Image" image={image} requestedWidth={1000} requestedHeight={500} />
-    <CroppedImage name="Vertical Banner" image={image} requestedWidth={200} requestedHeight={500} />
-    <CroppedImage name="Vertical Banner" image={image} requestedWidth={300} requestedHeight={500} />
-  </>
+          <Card title="Example Crops" primaryFooterAction={primaryAction}>{imageMarkup}</Card>
+          <SizeModal modalOpen={modalOpen} setModalOpen={setModalOpen} addSize={addSize} />
+        </>
 }
+    
