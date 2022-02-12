@@ -10,21 +10,29 @@ export const useImages = (localImages: ImagesObject, localActiveImage: string) =
   const [activeImage, setActiveImage] = useState(localActiveImage);
 
   const addImage = async (url: string) => {
-    setLoading(true);
-    const {width, height} = await getImageDimensions(url);
-    const focalPoint: Coordinate = {x: width / 2, y: height / 2};
-    const key = generateUuid();
-    const strictSafeZone = false;
-    const newImage: StoredImage = {key, url, focalPoint, width, height, strictSafeZone};
+    try {
+      setLoading(true);
+      const urlObject = new URL(url);
+      const strippedUrl = `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
+      const {width, height} = await getImageDimensions(strippedUrl);
+      const focalPoint: Coordinate = {x: width / 2, y: height / 2};
+      const key = generateUuid();
+      const strictSafeZone = false;
+      const newImage: StoredImage = {key, url: strippedUrl, focalPoint, width, height, strictSafeZone};
 
-    setImages((images) => {
-      return {
-        ...images,
-        [key]: newImage,
-      };
-    });
-    setActiveImage(key);
-    setLoading(false);
+      setImages((images) => {
+        return {
+          ...images,
+          [key]: newImage,
+        };
+      });
+      setActiveImage(key);
+      setLoading(false);
+      return true;
+    } catch {
+      setLoading(false);
+      return false;
+    }
   };
 
   const handleImagesChange = () => {

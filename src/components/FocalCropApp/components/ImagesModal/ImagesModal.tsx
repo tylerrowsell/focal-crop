@@ -11,7 +11,7 @@ export interface ImagesModalProps {
   activeImage: string;
   loading: boolean;
   setModalOpen: (value: boolean) => void;
-  addImage: (url: string) => void;
+  addImage: (url: string) => Promise<boolean>;
   removeImage: (key: string) => void;
   setActiveImage: (key: string) => void;
 }
@@ -42,7 +42,7 @@ export function ImagesModal({open, setModalOpen, images, addImage, loading, acti
         <Card>
         { imagesMarkup }
         <Card.Section>
-          <AddImageForm loading={loading} addImage={addImage} />
+          <AddImageForm loading={loading} addImage={addImage} closeModal={handleModalClose} />
         </Card.Section>
       </Card>
     </Modal>;
