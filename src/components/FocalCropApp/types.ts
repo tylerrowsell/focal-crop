@@ -6,7 +6,6 @@ export interface StoredImage {
   key: string
   url: string
   focalPoint: Coordinate
-  safeZone: Region,
   strictSafeZone: Boolean,
   width: number,
   height: number
@@ -17,13 +16,14 @@ export interface Coordinate {
   y: number
 }
 
-export interface Region {
-  min: Coordinate
-  max: Coordinate
-}
-
 export interface Dimension {
   width: number
   height: number
+}
+
+export interface CropProp {
+  name: string;
+  requestedWidth: number;
+  requestedHeight: number;
 }
 

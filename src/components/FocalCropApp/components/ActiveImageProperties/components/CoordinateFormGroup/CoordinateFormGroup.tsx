@@ -1,18 +1,16 @@
 import { Stack, TextField } from '@shopify/polaris';
 import React from 'react';
-import { RegionType } from '../..';
 import { Coordinate } from '../../../../types';
 
 export interface CoordinateFormGroupProps {
   title?: string;
   x: string;
   y: string;
-  type?: RegionType;
   vertical?: boolean;
-  onChange: (coordinate: Coordinate, regionType?: RegionType) => void;
+  onChange: (coordinate: Coordinate) => void;
 }
 
-export function CoordinateFormGroup({title, x, y, type, vertical = false, onChange}: CoordinateFormGroupProps) {
+export function CoordinateFormGroup({title, x, y, vertical = false, onChange}: CoordinateFormGroupProps) {
 
   const buildCoordinate = (field: string, value: string) =>{
     switch(field){
@@ -26,11 +24,7 @@ export function CoordinateFormGroup({title, x, y, type, vertical = false, onChan
   }
 
   const handleFieldChange = (field: string, value: string) => {
-    if(type !== undefined){
-      onChange(buildCoordinate(field, value), type);
-    }else{
-      onChange(buildCoordinate(field, value));
-    }
+    onChange(buildCoordinate(field, value));
   }
 
   const cleanTitle = title ? `${title} ` : "";

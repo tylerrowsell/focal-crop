@@ -10,3 +10,13 @@ export const getImageDimensions = async (url: string) => {
     img.src = url;
   });
 }
+
+export const arrayRemove = (array: any[], index: number) => {
+  if (index >= array.length) throw 'remove index larger than array';
+
+  if (index > -1) {
+    array.splice(index, 1);
+  }
+
+  return array;
+}

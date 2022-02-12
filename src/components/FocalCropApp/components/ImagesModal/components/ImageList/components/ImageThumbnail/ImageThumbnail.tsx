@@ -13,8 +13,10 @@ export interface ImageThumbnailProps {
 
 export function ImageThumbnail({alt, source, active, onClick, removeImage}: ImageThumbnailProps) {
   const className = `image-container${active ? " image-container--active" : ""}`
-  return <div className={className} onClick={onClick}>
-    <span className="remove-button" onClick={removeImage}>X</span>
-    <Thumbnail alt={alt} source={source} size="large" />
+  return <div className={className}>
+    {!active && <span className="remove-button" onClick={removeImage}>X</span>}
+    <div onClick={onClick}>
+      <Thumbnail alt={alt} source={source} size="large" />
+    </div>
   </div>
 }
