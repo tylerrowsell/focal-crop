@@ -1,6 +1,7 @@
-import { Stack, TextField } from '@shopify/polaris';
+import {Stack, TextField} from '@shopify/polaris';
 import React from 'react';
-import { Coordinate } from '../../../../types';
+
+import {Coordinate} from '../../../../types';
 
 export interface CoordinateFormGroupProps {
   title?: string;
@@ -12,8 +13,8 @@ export interface CoordinateFormGroupProps {
 
 export function CoordinateFormGroup({title, x, y, vertical = false, onChange}: CoordinateFormGroupProps) {
 
-  const buildCoordinate = (field: string, value: string) =>{
-    switch(field){
+  const buildCoordinate = (field: string, value: string) => {
+    switch (field) {
       case 'x':
         return {x: parseFloat(value), y: parseFloat(y)};
       case 'y':
@@ -21,17 +22,25 @@ export function CoordinateFormGroup({title, x, y, vertical = false, onChange}: C
       default:
         return {x: parseFloat(x), y: parseFloat(y)};
     }
-  }
+  };
 
   const handleFieldChange = (field: string, value: string) => {
     onChange(buildCoordinate(field, value));
-  }
+  };
 
-  const cleanTitle = title ? `${title} ` : "";
+  const cleanTitle = title ? `${title} ` : '';
   return <Stack vertical>
       <Stack vertical={vertical}>
-        <TextField inputMode="numeric" type="number" label={`${cleanTitle}X`} value={x} autoComplete="false" onChange={(value)=>{handleFieldChange("x", value)}} />
-        <TextField inputMode="numeric" type="number" label={`${cleanTitle}Y`} value={y} autoComplete="false" onChange={(value)=>{handleFieldChange("y", value)}}/>
+        <TextField
+          inputMode="numeric" type="number" label={`${cleanTitle}X`} value={x} autoComplete="false" onChange={(value) => {
+            handleFieldChange('x', value);
+          }}
+        />
+        <TextField
+          inputMode="numeric" type="number" label={`${cleanTitle}Y`} value={y} autoComplete="false" onChange={(value) => {
+            handleFieldChange('y', value);
+          }}
+        />
       </Stack>
-    </Stack>
+    </Stack>;
 }

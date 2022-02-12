@@ -1,30 +1,31 @@
-import { useEffect, useState } from "react";
-import { CropProp } from "../types";
-import { arrayRemove } from "../utilities";
+import {useState} from 'react';
 
-export const useSizes = (localSizes: CropProp[], forceUpdate: ()=> void) => {
+import {CropProp} from '../types';
+import {arrayRemove} from '../utilities';
+
+export const useSizes = (localSizes: CropProp[], forceUpdate: () => void) => {
   const [sizes, setSizes] = useState(localSizes);
 
   const addSize = (size: CropProp) => {
-    setSizes(currentSizes => {
-      currentSizes.push(size)
-      localStorage.setItem("localSizes", JSON.stringify(currentSizes));
+    setSizes((currentSizes) => {
+      currentSizes.push(size);
+      localStorage.setItem('localSizes', JSON.stringify(currentSizes));
       return currentSizes;
     });
-  }
+  };
 
   const removeSize = (sizeIndex: number) => {
-    setSizes(currentSizes => {
+    setSizes((currentSizes) => {
       const newSizes = arrayRemove(currentSizes, sizeIndex);
-      localStorage.setItem("localSizes", JSON.stringify(newSizes));
+      localStorage.setItem('localSizes', JSON.stringify(newSizes));
       forceUpdate();
-      return newSizes
-      });
-  }
+      return newSizes;
+    });
+  };
 
   return {
     sizes,
     addSize,
-    removeSize
-  }
-}
+    removeSize,
+  };
+};

@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Modal } from '@shopify/polaris';
-import { ImagesObject } from '../../types';
-import { AddImageForm, ImageList } from './components';
+import {Card, Modal} from '@shopify/polaris';
+
+import {ImagesObject} from '../../types';
+
+import {AddImageForm, ImageList} from './components';
 
 export interface ImagesModalProps {
   open: boolean;
@@ -17,22 +19,24 @@ export interface ImagesModalProps {
 export function ImagesModal({open, setModalOpen, images, addImage, loading, activeImage, setActiveImage, removeImage}: ImagesModalProps) {
 
   const handleSelectImage = (imageKey: string) => {
-    setActiveImage(imageKey)
-    setModalOpen(false)
-  }
+    setActiveImage(imageKey);
+    setModalOpen(false);
+  };
 
   const handleModalClose = () => {
-    setModalOpen(false)
-  }
+    setModalOpen(false);
+  };
 
-  const hasImages = Object.keys(images).length > 0
+  // eslint-disable-next-line @shopify/binary-assignment-parens
+  const hasImages = Object.keys(images).length > 0;
   const imagesMarkup = hasImages && <Card.Section>
-    <ImageList 
-      images={images} 
+    <ImageList
+      images={images}
       activeImage={activeImage}
-      setActiveImage={handleSelectImage} 
-      removeImage={removeImage}/>
-  </Card.Section>
+      setActiveImage={handleSelectImage}
+      removeImage={removeImage}
+    />
+  </Card.Section>;
 
   return <Modal open={open} title="Change Image" onClose={handleModalClose} >
         <Card>
@@ -41,5 +45,5 @@ export function ImagesModal({open, setModalOpen, images, addImage, loading, acti
           <AddImageForm loading={loading} addImage={addImage} />
         </Card.Section>
       </Card>
-    </Modal>
+    </Modal>;
 }

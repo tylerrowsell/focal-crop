@@ -3,22 +3,22 @@ export interface ImagesObject {
 }
 
 export interface StoredImage {
-  key: string
-  url: string
-  focalPoint: Coordinate
-  strictSafeZone: Boolean,
-  width: number,
-  height: number
+  key: string;
+  url: string;
+  focalPoint: Coordinate;
+  strictSafeZone: boolean;
+  width: number;
+  height: number;
 }
 
 export interface Coordinate {
-  x: number
-  y: number
+  x: number;
+  y: number;
 }
 
 export interface Dimension {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
 export interface CropProp {

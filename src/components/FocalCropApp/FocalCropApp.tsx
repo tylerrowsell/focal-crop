@@ -1,30 +1,31 @@
-import React, { useReducer, useState } from 'react';
-import { Layout, Page } from '@shopify/polaris';
-import { ActiveImageProperties, ImagesModal, OriginalImageCard, SampleCropCard } from './components';
-import { useImages } from './hooks/useImages';
-import { Coordinate, CropProp, ImagesObject } from './types';
-import { FocalImage } from './objects';
-import { useSizes } from './hooks/useSizes';
+import React, {useReducer, useState} from 'react';
+import {Layout, Page} from '@shopify/polaris';
+
+import {ActiveImageProperties, ImagesModal, OriginalImageCard, SampleCropCard} from './components';
+import {useImages} from './hooks/useImages';
+import {Coordinate, CropProp, ImagesObject} from './types';
+import {FocalImage} from './objects';
+import {useSizes} from './hooks/useSizes';
 
 interface FocalCropAppProps {
-  localImages: ImagesObject
-  localActiveImage: string
-  localSizes: CropProp[]
+  localImages: ImagesObject;
+  localActiveImage: string;
+  localSizes: CropProp[];
 }
 
 export function FocalCropApp({localImages, localActiveImage, localSizes}: FocalCropAppProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const [_ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [modalOpen, setModalOpen] = useState(false);
   const {addImage, updateImage, removeImage, images, activeImage, setActiveImage, loading} = useImages(localImages, localActiveImage);
   const {sizes, addSize, removeSize} = useSizes(localSizes, forceUpdate);
 
   const handleImageUpdate = (focalPoint: Coordinate) => {
     updateImage(activeImage, focalPoint);
-  }
+  };
 
   const image = new FocalImage(images[activeImage]);
-  const propertiesMarkup = <ActiveImageProperties image={image} updateImage={handleImageUpdate} />
+  const propertiesMarkup = <ActiveImageProperties image={image} updateImage={handleImageUpdate} />;
 
   return <Page fullWidth>
       <Layout>
@@ -37,13 +38,14 @@ export function FocalCropApp({localImages, localActiveImage, localSizes}: FocalC
         </Layout.Section>
       </Layout>
       <ImagesModal
-            open={modalOpen}
-            setModalOpen={setModalOpen}
-            images={images} 
-            activeImage={activeImage} 
-            loading={loading}
-            addImage={addImage} 
-            removeImage={removeImage}
-            setActiveImage={setActiveImage} />
-    </Page>
+        open={modalOpen}
+        setModalOpen={setModalOpen}
+        images={images}
+        activeImage={activeImage}
+        loading={loading}
+        addImage={addImage}
+        removeImage={removeImage}
+        setActiveImage={setActiveImage}
+      />
+    </Page>;
 }
