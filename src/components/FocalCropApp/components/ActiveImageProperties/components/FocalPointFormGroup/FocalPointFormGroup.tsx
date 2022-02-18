@@ -49,7 +49,7 @@ export function FocalPointFormGroup({title, x, y, zoom, vertical = false, onChan
             handleFieldChange('zoom', value.toString());
           }}
           min={0}
-          max={10}
+          max={100}
           step={1}
           output
         />

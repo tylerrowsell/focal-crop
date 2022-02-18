@@ -44,14 +44,15 @@ export class FocalImage extends Image {
 
   crop(requestedWidth: number, requestedHeight: number): Crop {
     const requestedImage = new Image(requestedWidth, requestedHeight);
-    let calculatedWidth = Math.round(widthFromAspectRatio(this.height, requestedImage.aspectRatio) * (1 - this.focalPoint.zoom / 10));
-    let calculatedHeight = Math.round(this.height * (1 - this.focalPoint.zoom / 10));
+    const zoom = 1 - (min([99, this.focalPoint.zoom]) || 1) / 100;
+    let calculatedWidth = Math.round(widthFromAspectRatio(this.height, requestedImage.aspectRatio) * zoom);
+    let calculatedHeight = Math.round(this.height * zoom);
     let maxLeft = this.width - calculatedWidth;
     let maxTop = this.height - calculatedHeight;
 
     if (requestedImage.isSquare && this.isVertical || requestedImage.isHorizontal) {
-      calculatedWidth = Math.round(this.width * (1 - this.focalPoint.zoom / 10));
-      calculatedHeight = Math.round(heightFromAspectRatio(this.width, requestedImage.aspectRatio) * (1 - this.focalPoint.zoom / 10));
+      calculatedWidth = Math.round(this.width * zoom);
+      calculatedHeight = Math.round(heightFromAspectRatio(this.width, requestedImage.aspectRatio) * zoom);
       maxLeft = this.width - calculatedWidth;
       maxTop = this.height - calculatedHeight;
     }

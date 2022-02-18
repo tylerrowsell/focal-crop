@@ -15,9 +15,8 @@ export const useImages = (localImages: ImagesObject, localActiveImage: string) =
       const urlObject = new URL(url);
       const strippedUrl = `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
       const {width, height} = await getImageDimensions(strippedUrl);
-      const focalPoint: FocalPoint = {x: width / 2, y: height / 2, zoom: 1};
+      const focalPoint: FocalPoint = {x: width / 2, y: height / 2, zoom: 0};
       const key = generateUuid();
-      const strictSafeZone = false;
       const newImage: StoredImage = {key, url: strippedUrl, focalPoint, width, height};
 
       setImages((images) => {
