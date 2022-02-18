@@ -3,7 +3,7 @@ import {Layout, Page} from '@shopify/polaris';
 
 import {ActiveImageProperties, ImagesModal, OriginalImageCard, SampleCropCard} from './components';
 import {useImages} from './hooks/useImages';
-import {Coordinate, CropProp, ImagesObject} from './types';
+import {FocalPoint, CropProp, ImagesObject} from './types';
 import {FocalImage} from './objects';
 import {useSizes} from './hooks/useSizes';
 
@@ -20,7 +20,7 @@ export function FocalCropApp({localImages, localActiveImage, localSizes}: FocalC
   const {addImage, updateImage, removeImage, images, activeImage, setActiveImage, loading} = useImages(localImages, localActiveImage);
   const {sizes, addSize, removeSize} = useSizes(localSizes, forceUpdate);
 
-  const handleImageUpdate = (focalPoint: Coordinate) => {
+  const handleImageUpdate = (focalPoint: FocalPoint) => {
     updateImage(activeImage, focalPoint);
   };
 

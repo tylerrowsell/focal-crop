@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {v4 as generateUuid} from 'uuid';
 
-import {Coordinate, StoredImage, ImagesObject} from '../types';
+import {FocalPoint, StoredImage, ImagesObject} from '../types';
 import {getImageDimensions} from '../utilities';
 
 export const useImages = (localImages: ImagesObject, localActiveImage: string) => {
@@ -15,10 +15,10 @@ export const useImages = (localImages: ImagesObject, localActiveImage: string) =
       const urlObject = new URL(url);
       const strippedUrl = `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
       const {width, height} = await getImageDimensions(strippedUrl);
-      const focalPoint: Coordinate = {x: width / 2, y: height / 2};
+      const focalPoint: FocalPoint = {x: width / 2, y: height / 2, zoom: 1};
       const key = generateUuid();
       const strictSafeZone = false;
-      const newImage: StoredImage = {key, url: strippedUrl, focalPoint, width, height, strictSafeZone};
+      const newImage: StoredImage = {key, url: strippedUrl, focalPoint, width, height};
 
       setImages((images) => {
         return {
@@ -41,7 +41,7 @@ export const useImages = (localImages: ImagesObject, localActiveImage: string) =
   };
   useEffect(handleImagesChange, [images, activeImage]);
 
-  const updateImage = (imageKey: string, focalPoint: Coordinate) => {
+  const updateImage = (imageKey: string, focalPoint: FocalPoint) => {
     setImages((images) => {
       return {
         ...images,

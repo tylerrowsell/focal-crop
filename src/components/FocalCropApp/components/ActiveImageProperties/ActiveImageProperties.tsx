@@ -1,14 +1,14 @@
 import React from 'react';
 import {Card} from '@shopify/polaris';
 
-import {Coordinate} from '../../types';
+import {FocalPoint} from '../../types';
 import {FocalImage} from '../../objects';
 
-import {CoordinateFormGroup} from './components';
+import {FocalPointFormGroup} from './components';
 
 export interface ActiveImagePropertiesProps {
   image?: FocalImage;
-  updateImage: (focalPoint: Coordinate) => void;
+  updateImage: (focalPoint: FocalPoint) => void;
 }
 
 export function ActiveImageProperties({image, updateImage}: ActiveImagePropertiesProps) {
@@ -17,7 +17,7 @@ export function ActiveImageProperties({image, updateImage}: ActiveImagePropertie
   }
   const {focalPoint} = image;
 
-  const handleFocalPointChange = (value: Coordinate) => {
+  const handleFocalPointChange = (value: FocalPoint) => {
     updateImage(
       value,
     );
@@ -25,9 +25,10 @@ export function ActiveImageProperties({image, updateImage}: ActiveImagePropertie
 
   return <Card>
     <Card.Section title="Focal Point">
-      <CoordinateFormGroup
+      <FocalPointFormGroup
         x={focalPoint.x.toString()}
         y={focalPoint.y.toString()}
+        zoom={focalPoint.zoom.toString()}
         onChange={handleFocalPointChange}
       />
     </Card.Section>

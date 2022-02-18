@@ -1,1 +1,1 @@
-export {CoordinateFormGroup} from './CoordinateFormGroup';
+export {FocalPointFormGroup} from './FocalPointFormGroup';
