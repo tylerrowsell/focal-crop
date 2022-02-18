@@ -7,12 +7,12 @@ import {Card} from '@shopify/polaris';
 
 import './OriginalImageCard.css';
 import {FocalImage} from '../../objects';
-import {Coordinate} from '../../types';
+import {FocalPoint} from '../../types';
 
 export interface OriginalImageCardProps {
   image?: FocalImage;
   setModalOpen: (open: boolean) => void;
-  updateImage: (focalPoint: Coordinate) => void;
+  updateImage: (focalPoint: FocalPoint) => void;
 }
 
 export function OriginalImageCard({image, setModalOpen, updateImage}: OriginalImageCardProps) {
@@ -33,7 +33,7 @@ export function OriginalImageCard({image, setModalOpen, updateImage}: OriginalIm
     const left = Math.round(offsetX / offsetWidth * image.width);
     const top = Math.round(offsetY / offsetHeight * image.height);
 
-    updateImage({x: left, y: top});
+    updateImage({x: left, y: top, zoom: image.focalPoint.zoom});
   };
 
 

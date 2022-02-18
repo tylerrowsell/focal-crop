@@ -5,15 +5,15 @@ export interface ImagesObject {
 export interface StoredImage {
   key: string;
   url: string;
-  focalPoint: Coordinate;
-  strictSafeZone: boolean;
+  focalPoint: FocalPoint;
   width: number;
   height: number;
 }
 
-export interface Coordinate {
+export interface FocalPoint {
   x: number;
   y: number;
+  zoom: number;
 }
 
 export interface Dimension {
