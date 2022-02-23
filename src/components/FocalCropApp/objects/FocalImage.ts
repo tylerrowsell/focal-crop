@@ -23,13 +23,15 @@ export class FocalImage extends Image {
     this.focalRegion = image.focalRegion;
   }
 
-  crop({requestedHeight, requestedWidth, cropTop: liquidTop, cropLeft: liquidLeft, cropWidth: liquidCropWidth, cropHeight: liquidCropHeight}: CropProp): ImageryProps {
+  crop({requestedHeight = 1, requestedWidth = 1, cropTop: liquidTop, cropLeft: liquidLeft, cropWidth: liquidCropWidth, cropHeight: liquidCropHeight}: CropProp): ImageryProps {
     // if (some([cw, ch, cl, ct]) && !every([cw, ch, cl, ct])) {
     //   throw 'Invalid Liquid Params';
     // }
 
-    const liquidWidth = requestedWidth || this.naturalWidth;
-    const liquidHeight = requestedHeight || this.naturalHeight;
+    const rr = clamp(min([this.naturalWidth / requestedWidth, this.naturalHeight / requestedHeight]) || 1, 0, 1);
+
+    const liquidWidth = requestedWidth * rr;
+    const liquidHeight = requestedHeight * rr;
 
     let cw = liquidCropWidth || this.focalRegion.cropWidth;
     let ch = liquidCropHeight || this.focalRegion.cropHeight;
@@ -38,22 +40,20 @@ export class FocalImage extends Image {
 
     const focalRegionCenterX = cl + cw * 0.5;
     const focalRegionCenterY = ct + ch * 0.5;
-
-
     const scale = max([cw / liquidWidth, ch / liquidHeight]) || 1;
+
     const longestCropDimension = max([liquidWidth * scale, liquidHeight * scale]) || 1;
     const shortestNaturalDimension = min([this.naturalWidth, this.naturalHeight]) || 1;
-    const fittingScale = shortestNaturalDimension / longestCropDimension;
-
+    const fittingScale = clamp(shortestNaturalDimension / longestCropDimension, 0, 1);
 
     cw = liquidWidth * scale * fittingScale;
     ch = liquidHeight * scale * fittingScale;
+
     cl = focalRegionCenterX - cw * 0.5;
     ct = focalRegionCenterY - ch * 0.5;
 
     cl = clamp(cl, 0, this.naturalWidth - cw);
     ct = clamp(ct, 0, this.naturalWidth - ch);
-
 
     return {
       height: liquidHeight.toFixed(0),
