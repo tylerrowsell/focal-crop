@@ -18,21 +18,12 @@ export function OriginalImageCard({image, setModalOpen, updateImage}: OriginalIm
     return <></>;
   }
 
-  // const focalPointStyle = {
-  //   left: `${image.focalPoint.x / image.width * 100}%`,
-  //   top: `${image.focalPoint.y / image.height * 100}%`,
-  // };
-
-  // const updateFocalPoint = (event: React.MouseEvent<HTMLImageElement>) => {
-  //   const nativeEvent = event.nativeEvent;
-  //   const {offsetX, offsetY} = nativeEvent;
-  //   const {offsetWidth, offsetHeight} = nativeEvent.target as HTMLImageElement;
-
-  //   const left = Math.round(offsetX / offsetWidth * image.width);
-  //   const top = Math.round(offsetY / offsetHeight * image.height);
-
-  //   updateImage({x: left, y: top, zoom: image.focalPoint.zoom});
-  // };
+  const focalRegionStyle = {
+    left: `${image.focalRegion.cropLeft / image.naturalWidth * 100}%`,
+    top: `${image.focalRegion.cropTop / image.naturalHeight * 100}%`,
+    width: `${image.focalRegion.cropWidth / image.naturalWidth * 100}%`,
+    height: `${image.focalRegion.cropHeight / image.naturalHeight * 100}%`,
+  };
 
 
   const openImageModalAction = {
@@ -44,7 +35,7 @@ export function OriginalImageCard({image, setModalOpen, updateImage}: OriginalIm
 
   const cardMarkup = image ? <><Card.Section>
   <div className="original-image-container">
-    {/* <span className="focal-point" style={focalPointStyle} /> */}
+    <div className="focal-region" style={focalRegionStyle} />
     <img className="original-image" src={image.url} alt={image.key} />
   </div>
 </Card.Section>

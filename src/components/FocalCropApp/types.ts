@@ -37,3 +37,17 @@ export interface CropProp {
   cropHeight?: number;
 }
 
+export interface ImageryProps {
+  [key: string]: string;
+  height: string;
+  width: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_left: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_top: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_width: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_height: string;
+}
+

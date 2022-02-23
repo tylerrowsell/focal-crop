@@ -15,14 +15,8 @@ export interface CroppedImageProps {
 
 export function CroppedImage({image, size, removeSize}: CroppedImageProps) {
 
-  const imageStyles = {
-    // width: size.requestedWidth,
-    // height: size.requestedHeight,
-    // maxWidth: '100%',
-  };
-
-  const {requestedHeight, requestedWidth, cropTop, cropLeft, cropWidth, cropHeight} = image.crop(size);
-  const imageUrl = `${image.url}?width=${requestedWidth}&height=${requestedHeight}&crop=region&crop_left=${cropLeft}&crop_top=${cropTop}&crop_width=${cropWidth}&crop_height=${cropHeight}`;
+  const cropParams = image.crop(size);
+  const imageUrl = `${image.url}?${new URLSearchParams(cropParams).toString()}`;
   const titleParams = {
     width: size.requestedWidth,
     height: size.requestedHeight,
@@ -32,6 +26,7 @@ export function CroppedImage({image, size, removeSize}: CroppedImageProps) {
     cropTop: size.cropTop,
     cropLeft: size.cropLeft,
   };
+
   const titleParamString = Object.entries(omitBy(titleParams, isUndefined)).map(([key, value]) => `${snakeCase(key)}: ${value}`).join(', ');
   const title = `{{ image | image_url: ${titleParamString} }}`;
 
@@ -40,8 +35,9 @@ export function CroppedImage({image, size, removeSize}: CroppedImageProps) {
     onAction: removeSize,
   }];
 
-  return <Card.Section title={title} actions={actions}>
-              <img src={imageUrl} className="cropped-image" style={imageStyles} alt={image.key} />
+  return <Card.Section actions={actions}>
+              <img src={imageUrl} className="cropped-image" alt={image.key} />
+              <div className="liquid">{title}</div>
               <p>{imageUrl}</p>
         </Card.Section>;
 }

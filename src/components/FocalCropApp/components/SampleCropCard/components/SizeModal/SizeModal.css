@@ -1,4 +1,11 @@
 .liquid {
   text-align: center;
-  font-size: 1rem;
+  font-size:0.8rem;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: black;
+  padding: 0.1rem;
+  margin-bottom: 1rem;
+  color: aqua;
+  text-align: left;
+  font-weight: bold;
 }
