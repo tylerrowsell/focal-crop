@@ -26,9 +26,8 @@ const mergeImages = (localImages: ImagesObject) => {
   Object.entries(localImages).forEach(([key, image]) => {
     localImages[key] = {
       ...image,
-      focalPoint: {
-        ...image.focalPoint,
-        zoom: image.focalPoint.zoom || 1,
+      focalRegion: {
+        ...image.focalRegion,
       },
     };
   });

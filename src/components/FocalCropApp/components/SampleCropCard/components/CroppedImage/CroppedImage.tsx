@@ -1,31 +1,39 @@
-/* eslint-disable @shopify/jsx-no-hardcoded-content */
 import React from 'react';
 import {Card} from '@shopify/polaris';
-import {min} from 'lodash';
+import {compact, isUndefined, min, omit, omitBy, snakeCase} from 'lodash';
 
 import {FocalImage} from '../../../../objects';
 import {CropProp} from '../../../../types';
 
 import './CroppedImage.css';
 
-export interface CroppedImageProps extends CropProp {
+export interface CroppedImageProps {
   image: FocalImage;
+  size: CropProp;
   removeSize: () => void;
 }
 
-export function CroppedImage({image, name, requestedHeight, requestedWidth, removeSize}: CroppedImageProps) {
+export function CroppedImage({image, size, removeSize}: CroppedImageProps) {
 
   const imageStyles = {
-    width: requestedWidth,
-    height: requestedHeight,
-    maxWidth: '100%',
+    // width: size.requestedWidth,
+    // height: size.requestedHeight,
+    // maxWidth: '100%',
   };
-  const {left, top, width, height} = image.crop(requestedWidth, requestedHeight);
 
-  const title = `${name}: ${requestedWidth}x${requestedHeight}`;
-  const imageWidth = min([requestedWidth, width]) || 0;
-  const imageHeight = min([requestedHeight, height]) || 0;
-  const imageUrl = `${image.url}?width=${imageWidth}&height=${imageHeight}&crop=region&crop_left=${left}&crop_top=${top}&crop_width=${width}&crop_height=${height}`;
+  const {requestedHeight, requestedWidth, cropTop, cropLeft, cropWidth, cropHeight} = image.crop(size);
+  const imageUrl = `${image.url}?width=${requestedWidth}&height=${requestedHeight}&crop=region&crop_left=${cropLeft}&crop_top=${cropTop}&crop_width=${cropWidth}&crop_height=${cropHeight}`;
+  const titleParams = {
+    width: size.requestedWidth,
+    height: size.requestedHeight,
+    crop: 'region',
+    cropHeight: size.cropHeight,
+    cropWidth: size.cropWidth,
+    cropTop: size.cropTop,
+    cropLeft: size.cropLeft,
+  };
+  const titleParamString = Object.entries(omitBy(titleParams, isUndefined)).map(([key, value]) => `${snakeCase(key)}: ${value}`).join(', ');
+  const title = `{{ image | image_url: ${titleParamString} }}`;
 
   const actions = [{
     content: 'Remove Size',
@@ -34,13 +42,6 @@ export function CroppedImage({image, name, requestedHeight, requestedWidth, remo
 
   return <Card.Section title={title} actions={actions}>
               <img src={imageUrl} className="cropped-image" style={imageStyles} alt={image.key} />
-              <p>
-                Requested Width: <b>{requestedWidth}</b> |
-                Requested Height:  <b>{requestedHeight}</b> |
-                Crop Width: <b>{width}</b> |
-                Crop Height:  <b>{height}</b> |
-                Crop Left:  <b>{left}</b> |
-                Crop Top: <b>{top}</b>
-              </p>
-            </Card.Section>;
+              <p>{imageUrl}</p>
+        </Card.Section>;
 }

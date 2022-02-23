@@ -18,12 +18,10 @@ export function SampleCropCard({image, sizes, addSize, removeSize}: SampleCropCa
 
   const imageMarkup = sizes.map((size, index) => {
     return <CroppedImage
-      name={size.name}
       image={image}
       // eslint-disable-next-line react/no-array-index-key
       key={`croppedImage-${index}`}
-      requestedWidth={size.requestedWidth}
-      requestedHeight={size.requestedHeight}
+      size={size}
       removeSize={() => removeSize(index)}
            />;
   });
