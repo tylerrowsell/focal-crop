@@ -1,0 +1,16 @@
+name: focal-crop
+
+type: node
+
+up:
+  - node:
+      version: v16.14.0
+      yarn: v1.22.17
+
+open:
+  app: http://localhost:3000/
+
+commands:
+  server: yarn start
+  test: yarn test
+  build: yarn build
