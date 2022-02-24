@@ -16,6 +16,11 @@ export interface FocalPoint {
   zoom: number;
 }
 
+export interface Coordinate {
+  x: number;
+  y: number;
+}
+
 export interface Dimension {
   width: number;
   height: number;

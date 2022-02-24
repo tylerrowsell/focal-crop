@@ -10,3 +10,27 @@
   position: absolute;
   border: 3px dashed yellow;
 }
+
+.resize-grabber{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  background-color: white;
+  border: blue solid 2px;
+  border-radius: 100%;
+  cursor: pointer;
+  right: -7.5px;
+  bottom: -7.5px;
+}
+
+.move-grabber {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: calc(50% - 12.5px);
+  left: calc(50% - 12.5px);
+  background-color: rgba(255, 255, 255, 0.3);
+  border: yellow solid 1px;
+  border-radius: 100%;
+  cursor: pointer;
+}
