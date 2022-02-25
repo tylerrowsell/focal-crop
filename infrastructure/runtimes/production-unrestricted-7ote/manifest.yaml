@@ -12,9 +12,11 @@ runtimeInfo:
 defaultBaseSource: github:Shopify/k8s_base/components
 components:
 - name: web
-  basePath: web/v15
+  basePath: web/v16
   resources:
   - base: ingress.yaml
   - base: certificate.yaml
   - base: service.yaml
   - base: deployment.yaml
+    patches:
+    - production-unrestricted-7ote/patches/deployment_container.yaml

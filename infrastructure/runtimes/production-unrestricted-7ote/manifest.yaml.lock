@@ -30,7 +30,9 @@ spec:
       - name: web
         image: gcr.io/shopify-docker-images/apps/production/focal-crop
         args:
-        - web
+        - nginx
+        - -g
+        - daemon off;
         ports:
         - name: http
           containerPort: 8000

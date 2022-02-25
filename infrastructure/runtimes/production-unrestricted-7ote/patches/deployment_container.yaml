@@ -1,0 +1,5 @@
+$scope: container
+args:
+- nginx
+- -g
+- daemon off;
