@@ -1,0 +1,8 @@
+ci:
+  require:
+    - buildkite/focal-crop-production-builder
+    - krate/lockfile-upload
+production_platform:
+  application: focal-crop
+  runtime_ids:
+    - production-unrestricted-7ote
