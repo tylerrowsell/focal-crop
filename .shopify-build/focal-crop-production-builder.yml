@@ -1,0 +1,8 @@
+containers:
+    production:
+      group: apps
+      application: focal-crop
+      environment: production
+      dockerfile:
+steps:
+  - build: production
