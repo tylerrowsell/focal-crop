@@ -1,0 +1,8 @@
+.size-text-wrapper {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.size-text-wrapper input{
+  display: inline;
+  width: 3rem;
+}

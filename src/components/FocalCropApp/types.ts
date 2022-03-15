@@ -5,9 +5,9 @@ export interface ImagesObject {
 export interface StoredImage {
   key: string;
   url: string;
-  focalPoint: FocalPoint;
-  width: number;
-  height: number;
+  focalRegion: Region;
+  naturalWidth: number;
+  naturalHeight: number;
 }
 
 export interface FocalPoint {
@@ -16,14 +16,43 @@ export interface FocalPoint {
   zoom: number;
 }
 
+export interface Coordinate {
+  x: number;
+  y: number;
+}
+
 export interface Dimension {
   width: number;
   height: number;
 }
 
+export interface Region {
+  cropLeft: number;
+  cropTop: number;
+  cropWidth: number;
+  cropHeight: number;
+}
+
 export interface CropProp {
-  name: string;
-  requestedWidth: number;
-  requestedHeight: number;
+  requestedWidth?: number;
+  requestedHeight?: number;
+  cropLeft?: number;
+  cropTop?: number;
+  cropWidth?: number;
+  cropHeight?: number;
+}
+
+export interface ImageryProps {
+  [key: string]: string;
+  height: string;
+  width: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_left: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_top: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_width: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  crop_height: string;
 }
 

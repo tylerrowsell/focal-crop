@@ -1,46 +1,43 @@
-/* eslint-disable @shopify/jsx-no-hardcoded-content */
 import React from 'react';
 import {Card} from '@shopify/polaris';
-import {min} from 'lodash';
+import {compact, isUndefined, min, omit, omitBy, snakeCase} from 'lodash';
 
 import {FocalImage} from '../../../../objects';
 import {CropProp} from '../../../../types';
 
 import './CroppedImage.css';
 
-export interface CroppedImageProps extends CropProp {
+export interface CroppedImageProps {
   image: FocalImage;
+  size: CropProp;
   removeSize: () => void;
 }
 
-export function CroppedImage({image, name, requestedHeight, requestedWidth, removeSize}: CroppedImageProps) {
+export function CroppedImage({image, size, removeSize}: CroppedImageProps) {
 
-  const imageStyles = {
-    width: requestedWidth,
-    height: requestedHeight,
-    maxWidth: '100%',
+  const cropParams = image.crop(size);
+  const imageUrl = `${image.url}?${new URLSearchParams(cropParams).toString()}`;
+  const titleParams = {
+    width: size.requestedWidth,
+    height: size.requestedHeight,
+    crop: 'region',
+    cropLeft: size.cropLeft,
+    cropTop: size.cropTop,
+    cropWidth: size.cropWidth,
+    cropHeight: size.cropHeight,
   };
-  const {left, top, width, height} = image.crop(requestedWidth, requestedHeight);
 
-  const title = `${name}: ${requestedWidth}x${requestedHeight}`;
-  const imageWidth = min([requestedWidth, width]) || 0;
-  const imageHeight = min([requestedHeight, height]) || 0;
-  const imageUrl = `${image.url}?width=${imageWidth}&height=${imageHeight}&crop=region&crop_left=${left}&crop_top=${top}&crop_width=${width}&crop_height=${height}`;
+  const titleParamString = Object.entries(omitBy(titleParams, isUndefined)).map(([key, value]) => `${snakeCase(key)}: ${value}`).join(', ');
+  const title = `{{ image | image_url: ${titleParamString} }}`;
 
   const actions = [{
     content: 'Remove Size',
     onAction: removeSize,
   }];
 
-  return <Card.Section title={title} actions={actions}>
-              <img src={imageUrl} className="cropped-image" style={imageStyles} alt={image.key} />
-              <p>
-                Requested Width: <b>{requestedWidth}</b> |
-                Requested Height:  <b>{requestedHeight}</b> |
-                Crop Width: <b>{width}</b> |
-                Crop Height:  <b>{height}</b> |
-                Crop Left:  <b>{left}</b> |
-                Crop Top: <b>{top}</b>
-              </p>
-            </Card.Section>;
+  return <Card.Section actions={actions}>
+              <img src={imageUrl} className="cropped-image" alt={image.key} />
+              <div className="liquid">{title}</div>
+              <p>{imageUrl}</p>
+        </Card.Section>;
 }

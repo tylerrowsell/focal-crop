@@ -1,7 +1,11 @@
+/* eslint-disable @shopify/jsx-no-hardcoded-content */
 import {Modal, Card, TextField, Stack} from '@shopify/polaris';
 import React, {useState} from 'react';
 
 import {CropProp} from '../../../../types';
+
+import {SizeTextField} from './components';
+import './SizeModal.css';
 
 export interface SizeModalProps {
   modalOpen: boolean;
@@ -10,9 +14,8 @@ export interface SizeModalProps {
 }
 
 export function SizeModal({modalOpen, addSize, setModalOpen}: SizeModalProps) {
-  const [width, setWidth] = useState('');
-  const [height, setHeight] = useState('');
-  const [name, setName] = useState('');
+  const [values, setValues] = useState<CropProp>({});
+  const {requestedWidth, requestedHeight, cropLeft, cropTop, cropWidth, cropHeight} = values;
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -20,50 +23,40 @@ export function SizeModal({modalOpen, addSize, setModalOpen}: SizeModalProps) {
 
   const handleAddSize = () => {
     addSize({
-      name,
-      requestedWidth: parseInt(width, 10),
-      requestedHeight: parseInt(height, 10),
+      requestedWidth,
+      requestedHeight,
+      cropLeft,
+      cropTop,
+      cropWidth,
+      cropHeight,
     });
     setModalOpen(false);
   };
+
+  const sizeFields = ['requestedWidth', 'requestedHeight', 'cropLeft', 'cropTop', 'cropWidth', 'cropHeight'];
+  const sizeFieldMarkup = sizeFields.map((name: string) => {
+    const value = values[name as keyof CropProp]?.toString();
+    const updateField = (value: string) => {
+      setValues((oldValues) => {
+        return {
+          ...oldValues,
+          [name]: parseInt(value, 10),
+        };
+      });
+    };
+    return <SizeTextField name={name} key={name} value={value || ''} setValue={updateField} />;
+  });
 
   const footerAction = {
     content: 'Add Size',
     onAction: handleAddSize,
   };
 
-  return <Modal title="Add Size" open={modalOpen} onClose={handleModalClose}>
+  return <Modal title="Add Size" open={modalOpen} onClose={handleModalClose} large>
     <Card primaryFooterAction={footerAction}>
       <Card.Section>
-      <Stack vertical><TextField
-        label="Name"
-        placeholder="Aspect Ratio 1:1"
-        value={name}
-        onChange={setName}
-        autoComplete="false"
-                      />
-        <Stack distribution="fillEvenly">
-          <TextField
-            inputMode="numeric"
-            type="number"
-            label="Requested Width"
-            value={width}
-            autoComplete="false"
-            placeholder="100"
-            onChange={setWidth}
-          />
-          <TextField
-            inputMode="numeric"
-            type="number"
-            label="Requested Height"
-            value={height}
-            autoComplete="false"
-            placeholder="100"
-            onChange={setHeight}
-          />
-        </Stack>
-        </Stack>
+        <p className="liquid">{`{{ image | image_url: `} {sizeFieldMarkup} {` }}`}</p>
       </Card.Section>
     </Card>
-    </Modal>;
+  </Modal>;
 }

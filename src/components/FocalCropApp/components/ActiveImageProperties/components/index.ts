@@ -1,1 +1,1 @@
-export {FocalPointFormGroup} from './FocalPointFormGroup';
+export {FocalRegionFormGroup} from './FocalRegionFormGroup';

@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {v4 as generateUuid} from 'uuid';
 
-import {FocalPoint, StoredImage, ImagesObject} from '../types';
+import {StoredImage, ImagesObject, Region} from '../types';
 import {getImageDimensions} from '../utilities';
 
 export const useImages = (localImages: ImagesObject, localActiveImage: string) => {
@@ -14,10 +14,10 @@ export const useImages = (localImages: ImagesObject, localActiveImage: string) =
       setLoading(true);
       const urlObject = new URL(url);
       const strippedUrl = `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
-      const {width, height} = await getImageDimensions(strippedUrl);
-      const focalPoint: FocalPoint = {x: width / 2, y: height / 2, zoom: 0};
+      const {width: naturalWidth, height: naturalHeight} = await getImageDimensions(strippedUrl);
+      const focalRegion: Region = {cropLeft: naturalWidth / 4, cropTop: naturalHeight / 4, cropWidth: naturalWidth * 0.75, cropHeight: naturalHeight * 0.75};
       const key = generateUuid();
-      const newImage: StoredImage = {key, url: strippedUrl, focalPoint, width, height};
+      const newImage: StoredImage = {key, url: strippedUrl, focalRegion, naturalHeight, naturalWidth};
 
       setImages((images) => {
         return {
@@ -40,13 +40,13 @@ export const useImages = (localImages: ImagesObject, localActiveImage: string) =
   };
   useEffect(handleImagesChange, [images, activeImage]);
 
-  const updateImage = (imageKey: string, focalPoint: FocalPoint) => {
+  const updateImage = (imageKey: string, focalRegion: Region) => {
     setImages((images) => {
       return {
         ...images,
         [imageKey]: {
           ...images[imageKey],
-          focalPoint,
+          focalRegion,
         },
       };
     });
