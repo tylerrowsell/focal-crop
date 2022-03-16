@@ -34,11 +34,11 @@ export const defaultImages: ImagesObject = {
 export const defaultActiveImage = Object.keys(defaultImages)[0];
 
 export const defaultSizes: CropProp[] = [
-  {requestedWidth: 500, requestedHeight: 500, cropLeft: 100, cropTop: 100, cropWidth: 100, cropHeight: 100},
   {requestedWidth: 500, requestedHeight: 500},
   {requestedWidth: 512, requestedHeight: 256},
   {requestedWidth: 256, requestedHeight: 512},
   {requestedWidth: 200, requestedHeight: 250},
   {requestedWidth: 100, requestedHeight: 100},
   {requestedWidth: 2000, requestedHeight: 2500},
+  {requestedWidth: 500, requestedHeight: 500, cropLeft: 100, cropTop: 100, cropWidth: 100, cropHeight: 100},
 ];
