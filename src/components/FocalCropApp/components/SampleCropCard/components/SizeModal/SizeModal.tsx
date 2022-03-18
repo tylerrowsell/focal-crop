@@ -2,7 +2,7 @@
 import {Modal, Card, TextField, Stack} from '@shopify/polaris';
 import React, {useState} from 'react';
 
-import {CropProp} from '../../../../types';
+import {CropProp} from '../../../../../../types';
 
 import {SizeTextField} from './components';
 import './SizeModal.css';

@@ -9,8 +9,8 @@ import {merge} from 'lodash';
 import {FocalCropApp} from './components';
 // eslint-disable-next-line @shopify/strict-component-boundaries
 import {defaultImages, defaultActiveImage, defaultSizes} from './components/FocalCropApp/defaults';
-// eslint-disable-next-line @shopify/strict-component-boundaries
-import {ImagesObject, StoredImage} from './components/FocalCropApp/types';
+import {ImagesObject} from './types';
+import {ImageProvider} from './ImageProvider';
 
 const loadLocalStorage = () => {
   const localImagesRaw = JSON.parse(localStorage.getItem('imagesJSON') || '{}');
@@ -38,11 +38,11 @@ function App() {
   const {localImages, localActiveImage, localSizes} = loadLocalStorage();
   return (
     <AppProvider i18n={enTranslations}>
-      <FocalCropApp
-        localImages={localImages}
-        localActiveImage={localActiveImage}
-        localSizes={localSizes}
-      />
+      <ImageProvider localImages={localImages} localActiveImage={localActiveImage}>
+        <FocalCropApp
+          localSizes={localSizes}
+        />
+      </ImageProvider>
     </AppProvider>
   );
 }

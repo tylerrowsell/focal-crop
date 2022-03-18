@@ -1,23 +1,20 @@
 import React from 'react';
 import {Stack} from '@shopify/polaris';
 
-import {ImagesObject} from '../../../../types';
+import {useImageContext} from '../../../../../../ImageProvider';
 
 import {ImageThumbnail} from './components';
 
 export interface ImageListProps {
-  images: ImagesObject;
-  activeImage: string;
-  setActiveImage: (key: string) => void;
-  removeImage: (key: string) => void;
+  closeModal: () => void;
 }
 
-export function ImageList({images, activeImage, setActiveImage, removeImage}: ImageListProps) {
+export function ImageList({closeModal}: ImageListProps) {
+  const {images, activeImage, setActiveImageKey, removeImage} = useImageContext();
   const imagesMarkup = Object.entries(images).map(([key, image]) => {
-    // eslint-disable-next-line @shopify/binary-assignment-parens
-    const active = key === activeImage;
     const handleImageChange = () => {
-      setActiveImage(image.key);
+      setActiveImageKey(image.key);
+      closeModal();
     };
     const handleRemoveImage = () => {
       removeImage(image.key);
@@ -26,7 +23,7 @@ export function ImageList({images, activeImage, setActiveImage, removeImage}: Im
       alt={image.key}
       key={image.key}
       source={image.url}
-      active={active}
+      active={key === activeImage.key}
       onClick={handleImageChange}
       removeImage={handleRemoveImage}
            />;
