@@ -1,19 +1,21 @@
 import React from 'react';
 import {Card} from '@shopify/polaris';
-import {compact, isUndefined, min, omit, omitBy, snakeCase} from 'lodash';
+import {isEmpty, isUndefined, omitBy, snakeCase} from 'lodash';
 
-import {FocalImage} from '../../../../objects';
-import {CropProp} from '../../../../types';
+import {FocalImage} from '../../../../../../objects';
+import {CropProp} from '../../../../../../types';
+import {useImageContext} from '../../../../../../ImageProvider';
 
 import './CroppedImage.css';
 
 export interface CroppedImageProps {
-  image: FocalImage;
   size: CropProp;
   removeSize: () => void;
 }
 
-export function CroppedImage({image, size, removeSize}: CroppedImageProps) {
+export function CroppedImage({size, removeSize}: CroppedImageProps) {
+  const {activeImage} = useImageContext();
+  const image = new FocalImage(activeImage);
 
   const cropParams = image.crop(size);
   const imageUrl = `${image.url}?${new URLSearchParams(cropParams).toString()}`;

@@ -1,24 +1,21 @@
-import {Card} from '@shopify/polaris';
 import React, {useState} from 'react';
+import {Card} from '@shopify/polaris';
 
-import {FocalImage} from '../../objects';
-import {CropProp} from '../../types';
+import {CropProp} from '../../../../types';
 
 import {CroppedImage, SizeModal} from './components';
 
 export interface SampleCropCardProps {
-  image: FocalImage;
   sizes: CropProp[];
   addSize: (value: CropProp) => void;
   removeSize: (value: number) => void;
 }
 
-export function SampleCropCard({image, sizes, addSize, removeSize}: SampleCropCardProps) {
+export function SampleCropCard({sizes, addSize, removeSize}: SampleCropCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const imageMarkup = sizes.map((size, index) => {
     return <CroppedImage
-      image={image}
       // eslint-disable-next-line react/no-array-index-key
       key={`croppedImage-${index}`}
       size={size}

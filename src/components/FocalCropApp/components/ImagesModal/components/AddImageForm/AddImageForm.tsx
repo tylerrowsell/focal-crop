@@ -1,14 +1,15 @@
 /* eslint-disable @shopify/jsx-no-hardcoded-content */
-import {FormLayout, Button, TextField, InlineError, Stack} from '@shopify/polaris';
 import React, {useEffect, useState} from 'react';
+import {FormLayout, Button, TextField, InlineError, Stack} from '@shopify/polaris';
+
+import {useImageContext} from '../../../../../../ImageProvider';
 
 export interface AddImageFormProps {
-  addImage: (url: string) => Promise<boolean>;
-  loading: boolean;
   closeModal: () => void;
 }
 
-export function AddImageForm({addImage, loading, closeModal}: AddImageFormProps) {
+export function AddImageForm({closeModal}: AddImageFormProps) {
+  const {addImage, loading} = useImageContext();
   const [url, setUrl] = useState('https://cdn.shopify.com/s/files/1/1607/3025/files/camera.jpg');
   const [error, setError] = useState('');
 

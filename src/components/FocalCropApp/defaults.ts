@@ -1,4 +1,4 @@
-import {CropProp, ImagesObject} from './types';
+import {CropProp, ImagesObject} from '../../types';
 
 export const defaultImages: ImagesObject = {
   'f7683bf9-6bfd-4fdf-9be4-cbe0df628088': {

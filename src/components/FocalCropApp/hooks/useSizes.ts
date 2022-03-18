@@ -1,7 +1,7 @@
 import {useState} from 'react';
 
-import {CropProp} from '../types';
-import {arrayRemove} from '../utilities';
+import {CropProp} from '../../../types';
+import {arrayRemove} from '../../../utilities';
 
 export const useSizes = (localSizes: CropProp[], forceUpdate: () => void) => {
   const [sizes, setSizes] = useState(localSizes);
