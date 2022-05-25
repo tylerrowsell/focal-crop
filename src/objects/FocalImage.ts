@@ -53,7 +53,7 @@ export class FocalImage extends Image {
     ct = focalRegionCenterY - ch * 0.5;
 
     cl = clamp(cl, 0, this.naturalWidth - cw);
-    ct = clamp(ct, 0, this.naturalWidth - ch);
+    ct = clamp(ct, 0, this.naturalHeight - ch);
 
     return {
       height: liquidHeight.toFixed(0),
