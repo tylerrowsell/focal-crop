@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-import {CropProp} from '../../../types';
+import {CropProp, localStorageVersion} from '../../../types';
 import {arrayRemove} from '../../../utilities';
 
 export const useSizes = (localSizes: CropProp[], forceUpdate: () => void) => {
@@ -9,7 +9,7 @@ export const useSizes = (localSizes: CropProp[], forceUpdate: () => void) => {
   const addSize = (size: CropProp) => {
     setSizes((currentSizes) => {
       currentSizes.push(size);
-      localStorage.setItem('localSizes', JSON.stringify(currentSizes));
+      localStorage.setItem(`localSizes-${localStorageVersion}`, JSON.stringify(currentSizes));
       return currentSizes;
     });
   };
@@ -17,7 +17,7 @@ export const useSizes = (localSizes: CropProp[], forceUpdate: () => void) => {
   const removeSize = (sizeIndex: number) => {
     setSizes((currentSizes) => {
       const newSizes = arrayRemove(currentSizes, sizeIndex);
-      localStorage.setItem('localSizes', JSON.stringify(newSizes));
+      localStorage.setItem(`localSizes-${localStorageVersion}`, JSON.stringify(newSizes));
       forceUpdate();
       return newSizes;
     });

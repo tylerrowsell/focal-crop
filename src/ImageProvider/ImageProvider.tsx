@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState, createContext, useCallback, useM
 import {v4 as generateUuid} from 'uuid';
 
 import {getImageDimensions} from '../utilities';
-import {CropType, ImagesObject, Region, StoredImage} from '../types';
+import {CropType, ImagesObject, localStorageVersion, Region, StoredImage} from '../types';
 
 const DIRECT_USE_MESSAGE = `ImageContext should not be used directly; please use ImageProvider and useImageContext`;
 
@@ -80,8 +80,8 @@ export function ImageProvider({children, localImages, localActiveImage}: Provide
   }, []);
 
   const handleImagesChange = () => {
-    localStorage.setItem('imagesJSON', JSON.stringify(images));
-    localStorage.setItem('activeImageKey', activeImageKey);
+    localStorage.setItem(`imagesJSON-${localStorageVersion}`, JSON.stringify(images));
+    localStorage.setItem(`activeImageKey-${localStorageVersion}`, activeImageKey);
   };
   useEffect(handleImagesChange, [images, activeImageKey]);
 

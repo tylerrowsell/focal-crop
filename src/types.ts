@@ -1,3 +1,5 @@
+export const localStorageVersion = 'v2';
+
 export interface ImagesObject {
   [key: string]: StoredImage;
 }
