@@ -2,11 +2,12 @@ import React, {useContext, useEffect, useState, createContext, useCallback, useM
 import {v4 as generateUuid} from 'uuid';
 
 import {getImageDimensions} from '../utilities';
-import {ImagesObject, Region, StoredImage} from '../types';
+import {CropType, ImagesObject, Region, StoredImage} from '../types';
 
 const DIRECT_USE_MESSAGE = `ImageContext should not be used directly; please use ImageProvider and useImageContext`;
 
 interface ImageProviderContext {
+  cropType: CropType;
   activeImage: StoredImage;
   images: ImagesObject;
   loading: boolean;
@@ -14,9 +15,11 @@ interface ImageProviderContext {
   updateImage: (imageKey: string, focalRegion: Region) => void;
   removeImage: (imageKey: string) => void;
   setActiveImageKey: (imageKey: string) => void;
+  setCropType: (cropType: CropType) => void;
 }
 
 const ImageContext = createContext<ImageProviderContext>({
+  cropType: CropType.ScaleAndCenter,
   activeImage: {} as StoredImage,
   images: {} as ImagesObject,
   loading: false,
@@ -32,6 +35,9 @@ const ImageContext = createContext<ImageProviderContext>({
   setActiveImageKey() {
     throw new Error(DIRECT_USE_MESSAGE);
   },
+  setCropType() {
+    throw new Error(DIRECT_USE_MESSAGE);
+  },
 });
 
 
@@ -45,6 +51,7 @@ export function ImageProvider({children, localImages, localActiveImage}: Provide
   const [images, setImages] = useState<ImagesObject>(localImages);
   const [loading, setLoading] = useState(false);
   const [activeImageKey, setActiveImageKey] = useState(localActiveImage);
+  const [cropType, setCropType] = useState<CropType>(CropType.ScaleAndCenter);
 
   const activeImage = images[activeImageKey];
 
@@ -102,13 +109,15 @@ export function ImageProvider({children, localImages, localActiveImage}: Provide
 
   const contextValue = useMemo(() => (
     {activeImage,
+      cropType,
       images,
       loading,
       addImage,
       updateImage,
       removeImage,
       setActiveImageKey,
-    }), [activeImage, addImage, images, loading, removeImage, updateImage]);
+      setCropType,
+    }), [activeImage, cropType, addImage, images, loading, removeImage, updateImage]);
 
   return <ImageContext.Provider value={contextValue}>
           {children}

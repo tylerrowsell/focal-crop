@@ -16,7 +16,7 @@ export function FocalCropApp({localSizes}: FocalCropAppProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const {sizes, addSize, removeSize} = useSizes(localSizes, forceUpdate);
 
-  const propertiesMarkup = <ActiveImageProperties />;
+  // const propertiesMarkup = <ActiveImageProperties />;
 
   return <Page fullWidth>
       <Layout>
@@ -25,7 +25,7 @@ export function FocalCropApp({localSizes}: FocalCropAppProps) {
         </Layout.Section>
         <Layout.Section secondary>
           <OriginalImageCard setModalOpen={setModalOpen} />
-          {propertiesMarkup}
+          {/* {propertiesMarkup} */}
         </Layout.Section>
       </Layout>
       <ImagesModal

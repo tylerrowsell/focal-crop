@@ -1,10 +1,10 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable @shopify/jsx-no-hardcoded-content */
 import React, {useState} from 'react';
-import {Card} from '@shopify/polaris';
+import {Card, Select} from '@shopify/polaris';
 
 import './OriginalImageCard.css';
-import {Coordinate, Dimension} from '../../../../types';
+import {Coordinate, CropType, Dimension} from '../../../../types';
 import {useImageContext} from '../../../../ImageProvider';
 
 export interface OriginalImageCardProps {
@@ -15,7 +15,7 @@ export function OriginalImageCard({setModalOpen}: OriginalImageCardProps) {
   const [initialPos, setInitialPos] = useState<Coordinate>({x: 0, y: 0});
   const [initialSize, setInitialSize] = useState<Dimension>({width: 0, height: 0});
   const [intiialCrop, setInitialCrop] = useState<Coordinate>({x: 0, y: 0});
-  const {activeImage, updateImage} = useImageContext();
+  const {activeImage, updateImage, cropType, setCropType} = useImageContext();
 
   const focalRegionStyle = {
     left: `${activeImage.focalRegion.focalLeft / activeImage.naturalWidth * 100}%`,
@@ -76,14 +76,34 @@ export function OriginalImageCard({setModalOpen}: OriginalImageCardProps) {
     event.preventDefault();
   };
 
+  const handleCropTypeChange = (cropType: string) => {
+    switch (cropType) {
+      case 'ScaleAndCenter':
+        setCropType(CropType.ScaleAndCenter);
+        break;
+      case 'Pan':
+        setCropType(CropType.Pan);
+        break;
+    }
+  };
+
+  const cropTypeOptions = Object.keys(CropType).map((cropType) => {
+    return {label: cropType, value: cropType};
+  });
+
+  const containerClass = `original-image-container croptype--${cropType.toLowerCase()}`;
+
   const cardMarkup = activeImage ? <><Card.Section>
-  <div className="original-image-container">
+  <div className={containerClass}>
     <div id="focalRegion" className="focal-region" style={focalRegionStyle} >
       <span className="move-grabber move-grabber" draggable onDragStart={handleDragStart} onDragCapture={handleSquareDrag} onDragOver={handleDragEnd} />
       <span className="resize-grabber" draggable onDragStart={handleDragStart} onDragCapture={handleCornerDrag} onDragOver={handleDragEnd} />
     </div>
     <img id="originalImage" className="original-image" src={activeImage.url} alt={activeImage.key} />
   </div>
+</Card.Section>
+<Card.Section>
+  <Select label="Crop Type" value={cropType} onChange={handleCropTypeChange} options={cropTypeOptions} />
 </Card.Section>
 <Card.Section>
   <p><b>Natural Width</b>: {activeImage.naturalWidth}px <b>Natural Height</b>: {activeImage.naturalHeight}px</p>

@@ -38,6 +38,11 @@ export interface CropProp {
   requestedHeight?: number;
 }
 
+export enum CropType {
+  ScaleAndCenter = 'ScaleAndCenter',
+  Pan = 'Pan'
+}
+
 export interface ImageryProps {
   [key: string]: string;
   height: string;

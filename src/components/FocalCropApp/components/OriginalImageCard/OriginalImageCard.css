@@ -34,3 +34,13 @@
   border-radius: 100%;
   cursor: pointer;
 }
+
+.croptype--pan .focal-region{
+  border: none;
+}
+.croptype--pan .resize-grabber{
+  display: none;
+}
+.croptype--pan .move-grabber{
+  border: 2px solid red;
+}
