@@ -18,10 +18,10 @@ export function OriginalImageCard({setModalOpen}: OriginalImageCardProps) {
   const {activeImage, updateImage} = useImageContext();
 
   const focalRegionStyle = {
-    left: `${activeImage.focalRegion.cropLeft / activeImage.naturalWidth * 100}%`,
-    top: `${activeImage.focalRegion.cropTop / activeImage.naturalHeight * 100}%`,
-    width: `${activeImage.focalRegion.cropWidth / activeImage.naturalWidth * 100}%`,
-    height: `${activeImage.focalRegion.cropHeight / activeImage.naturalHeight * 100}%`,
+    left: `${activeImage.focalRegion.focalLeft / activeImage.naturalWidth * 100}%`,
+    top: `${activeImage.focalRegion.focalTop / activeImage.naturalHeight * 100}%`,
+    width: `${activeImage.focalRegion.focalWidth / activeImage.naturalWidth * 100}%`,
+    height: `${activeImage.focalRegion.focalHeight / activeImage.naturalHeight * 100}%`,
   };
 
 
@@ -37,7 +37,7 @@ export function OriginalImageCard({setModalOpen}: OriginalImageCardProps) {
 
     setInitialPos({x: event.clientX, y: event.clientY});
     setInitialSize({width: focalRegion.offsetWidth, height: focalRegion.offsetHeight});
-    setInitialCrop({x: activeImage.focalRegion.cropLeft, y: activeImage.focalRegion.cropTop});
+    setInitialCrop({x: activeImage.focalRegion.focalLeft, y: activeImage.focalRegion.focalTop});
   };
 
   const handleCornerDrag = (event: React.DragEvent<HTMLSpanElement>) => {
@@ -51,10 +51,10 @@ export function OriginalImageCard({setModalOpen}: OriginalImageCardProps) {
     const width = initialSize.width + clientX - initialPos.x;
     const height = initialSize.height + clientY - initialPos.y;
 
-    const {cropLeft, cropTop} = activeImage.focalRegion;
-    const cropWidth = width / originalImage.offsetWidth * activeImage.naturalWidth;
-    const cropHeight = height / originalImage.offsetHeight * activeImage.naturalHeight;
-    updateImage(activeImage.key, {cropLeft, cropTop, cropWidth, cropHeight});
+    const {focalLeft, focalTop} = activeImage.focalRegion;
+    const focalWidth = width / originalImage.offsetWidth * activeImage.naturalWidth;
+    const focalHeight = height / originalImage.offsetHeight * activeImage.naturalHeight;
+    updateImage(activeImage.key, {focalLeft, focalTop, focalWidth, focalHeight});
   };
 
   const handleSquareDrag = (event: React.DragEvent<HTMLSpanElement>) => {
@@ -65,11 +65,11 @@ export function OriginalImageCard({setModalOpen}: OriginalImageCardProps) {
       return;
     }
 
-    const cropLeft = intiialCrop.x + (clientX - initialPos.x) / originalImage.offsetWidth * activeImage.naturalWidth;
-    const cropTop = intiialCrop.y + (clientY - initialPos.y) / originalImage.offsetHeight * activeImage.naturalHeight;
-    const {cropHeight, cropWidth} = activeImage.focalRegion;
+    const focalLeft = intiialCrop.x + (clientX - initialPos.x) / originalImage.offsetWidth * activeImage.naturalWidth;
+    const focalTop = intiialCrop.y + (clientY - initialPos.y) / originalImage.offsetHeight * activeImage.naturalHeight;
+    const {focalHeight, focalWidth} = activeImage.focalRegion;
 
-    updateImage(activeImage.key, {cropLeft, cropTop, cropWidth, cropHeight});
+    updateImage(activeImage.key, {focalLeft, focalTop, focalHeight, focalWidth});
   };
 
   const handleDragEnd = (event: React.DragEvent<HTMLSpanElement>) => {

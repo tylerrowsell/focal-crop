@@ -15,7 +15,7 @@ export interface SizeModalProps {
 
 export function SizeModal({modalOpen, addSize, setModalOpen}: SizeModalProps) {
   const [values, setValues] = useState<CropProp>({});
-  const {requestedWidth, requestedHeight, cropLeft, cropTop, cropWidth, cropHeight} = values;
+  const {requestedWidth, requestedHeight} = values;
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -25,15 +25,11 @@ export function SizeModal({modalOpen, addSize, setModalOpen}: SizeModalProps) {
     addSize({
       requestedWidth,
       requestedHeight,
-      cropLeft,
-      cropTop,
-      cropWidth,
-      cropHeight,
     });
     setModalOpen(false);
   };
 
-  const sizeFields = ['requestedWidth', 'requestedHeight', 'cropLeft', 'cropTop', 'cropWidth', 'cropHeight'];
+  const sizeFields = ['requestedWidth', 'requestedHeight'];
   const sizeFieldMarkup = sizeFields.map((name: string) => {
     const value = values[name as keyof CropProp]?.toString();
     const updateField = (value: string) => {

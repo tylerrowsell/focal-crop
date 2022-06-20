@@ -13,20 +13,20 @@ export function FocalRegionFormGroup() {
     updateImage(activeImage.key, region);
   };
 
-  const {cropLeft, cropTop, cropWidth, cropHeight} = focalRegion;
+  const {focalLeft, focalTop, focalWidth, focalHeight} = focalRegion;
 
   const buildFocalRegion = (field: string, value: string) => {
     switch (field) {
-      case 'cropTop':
-        return {cropTop: parseFloat(value), cropLeft, cropWidth, cropHeight};
-      case 'cropLeft':
-        return {cropTop, cropLeft: parseFloat(value), cropWidth, cropHeight};
-      case 'cropWidth':
-        return {cropTop, cropLeft, cropWidth: parseFloat(value), cropHeight};
-      case 'cropHeight':
-        return {cropTop, cropLeft, cropWidth, cropHeight: parseFloat(value)};
+      case 'focalTop':
+        return {focalTop: parseFloat(value), focalLeft, focalWidth, focalHeight};
+      case 'focalLeft':
+        return {focalTop, focalLeft: parseFloat(value), focalWidth, focalHeight};
+      case 'focalWidth':
+        return {focalTop, focalLeft, focalWidth: parseFloat(value), focalHeight};
+      case 'focalHeight':
+        return {focalTop, focalLeft, focalWidth, focalHeight: parseFloat(value)};
       default:
-        return {cropTop, cropLeft, cropWidth, cropHeight};
+        return {focalTop, focalLeft, focalWidth, focalHeight};
     }
   };
 
@@ -34,25 +34,25 @@ export function FocalRegionFormGroup() {
   return <Stack>
       <Stack>
         <TextField
-          inputMode="numeric" type="number" label="Crop Left" value={cropLeft.toFixed()} autoComplete="false" onChange={(value) => {
-            handleFieldChange('cropLeft', value);
+          inputMode="numeric" type="number" label="Crop Left" value={focalLeft.toFixed()} autoComplete="false" onChange={(value) => {
+            handleFieldChange('focalLeft', value);
           }}
         />
         <TextField
-          inputMode="numeric" type="number" label="Crop Width" value={cropWidth.toFixed()} autoComplete="false" onChange={(value) => {
-            handleFieldChange('cropWidth', value);
+          inputMode="numeric" type="number" label="Crop Width" value={focalWidth.toFixed()} autoComplete="false" onChange={(value) => {
+            handleFieldChange('focalWidth', value);
           }}
         />
       </Stack>
       <Stack>
         <TextField
-          inputMode="numeric" type="number" label="Crop Top" value={cropTop.toFixed()} autoComplete="false" onChange={(value) => {
-            handleFieldChange('cropTop', value);
+          inputMode="numeric" type="number" label="Crop Top" value={focalTop.toFixed()} autoComplete="false" onChange={(value) => {
+            handleFieldChange('focalTop', value);
           }}
         />
         <TextField
-          inputMode="numeric" type="number" label="Crop Height" value={cropHeight.toFixed()} autoComplete="false" onChange={(value) => {
-            handleFieldChange('cropHeight', value);
+          inputMode="numeric" type="number" label="Crop Height" value={focalHeight.toFixed()} autoComplete="false" onChange={(value) => {
+            handleFieldChange('focalHeight', value);
           }}
         />
       </Stack>

@@ -23,49 +23,55 @@ export class FocalImage extends Image {
     this.focalRegion = image.focalRegion;
   }
 
-  crop({requestedHeight = 1, requestedWidth = 1, cropTop: liquidTop, cropLeft: liquidLeft, cropWidth: liquidCropWidth, cropHeight: liquidCropHeight}: CropProp): ImageryProps {
-    // if (some([cw, ch, cl, ct]) && !every([cw, ch, cl, ct])) {
-    //   throw 'Invalid Liquid Params';
-    // }
+  crop({requestedHeight = 1, requestedWidth = 1}: CropProp): ImageryProps {
 
-    const rr = clamp(min([this.naturalWidth / requestedWidth, this.naturalHeight / requestedHeight]) || 1, 0, 1);
+    // Determine limiting dimension based on original image size and requested size
+    const requestedScaledownFactor = clamp(min([this.naturalWidth / requestedWidth, this.naturalHeight / requestedHeight]) as number, 0, 1);
 
-    const liquidWidth = requestedWidth * rr;
-    const liquidHeight = requestedHeight * rr;
+    // If the requested width or height is larger than raw image, change requested width/height to match restricting dimension.
+    const adjustedRequestedWidth = requestedWidth * requestedScaledownFactor;
+    const adjustedRequestedHeight = requestedHeight * requestedScaledownFactor;
 
-    let cw = liquidCropWidth || this.focalRegion.cropWidth;
-    let ch = liquidCropHeight || this.focalRegion.cropHeight;
-    let cl = liquidLeft || this.focalRegion.cropLeft;
-    let ct = liquidTop || this.focalRegion.cropTop;
+    // Get the focal region
+    const {focalLeft, focalTop, focalWidth, focalHeight} = this.focalRegion;
 
-    const focalRegionCenterX = cl + cw * 0.5;
-    const focalRegionCenterY = ct + ch * 0.5;
-    const scale = max([cw / liquidWidth, ch / liquidHeight]) || 1;
+    // Find center of focal region.
+    const focalRegionCenterX = focalLeft + focalWidth * 0.5;
+    const focalRegionCenterY = focalTop + focalHeight * 0.5;
 
-    const longestCropDimension = max([liquidWidth * scale, liquidHeight * scale]) || 1;
-    const shortestNaturalDimension = min([this.naturalWidth, this.naturalHeight]) || 1;
+    // Determine scale factor to maximize the focal region.
+    const scale = max([focalWidth / adjustedRequestedWidth, focalHeight / adjustedRequestedHeight]) as number;
+    // Scale image to preseve most of the focal region
+    let cropWidth = adjustedRequestedWidth * scale;
+    let cropHeight = adjustedRequestedHeight * scale;
+
+    const longestCropDimension = max([adjustedRequestedWidth * scale, adjustedRequestedHeight * scale]) as number;
+    const shortestNaturalDimension = min([this.naturalWidth, this.naturalHeight]) as number;
+
+    // Determine how much larger focal region is that original image
     const fittingScale = clamp(shortestNaturalDimension / longestCropDimension, 0, 1);
 
-    cw = liquidWidth * scale * fittingScale;
-    ch = liquidHeight * scale * fittingScale;
+    // Reduce crop to ensure it fits inside bounds of image
+    cropWidth *= fittingScale;
+    cropHeight *= fittingScale;
 
-    cl = focalRegionCenterX - cw * 0.5;
-    ct = focalRegionCenterY - ch * 0.5;
+    let cropLeft = focalRegionCenterX - cropWidth * 0.5;
+    let cropTop = focalRegionCenterY - cropHeight * 0.5;
 
-    cl = clamp(cl, 0, this.naturalWidth - cw);
-    ct = clamp(ct, 0, this.naturalHeight - ch);
+    cropLeft = clamp(cropLeft, 0, this.naturalWidth - cropWidth);
+    cropTop = clamp(cropTop, 0, this.naturalHeight - cropHeight);
 
     return {
-      height: liquidHeight.toFixed(0),
-      width: liquidWidth.toFixed(0),
+      height: adjustedRequestedHeight.toFixed(0),
+      width: adjustedRequestedWidth.toFixed(0),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      crop_top: ct.toFixed(0),
+      crop_top: cropTop.toFixed(0),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      crop_left: cl.toFixed(0),
+      crop_left: cropLeft.toFixed(0),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      crop_width: cw.toFixed(0),
+      crop_width: cropWidth.toFixed(0),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      crop_height: ch.toFixed(0),
+      crop_height: cropHeight.toFixed(0),
       crop: 'region',
     };
   }

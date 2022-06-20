@@ -27,19 +27,15 @@ export interface Dimension {
 }
 
 export interface Region {
-  cropLeft: number;
-  cropTop: number;
-  cropWidth: number;
-  cropHeight: number;
+  focalLeft: number;
+  focalTop: number;
+  focalWidth: number;
+  focalHeight: number;
 }
 
 export interface CropProp {
   requestedWidth?: number;
   requestedHeight?: number;
-  cropLeft?: number;
-  cropTop?: number;
-  cropWidth?: number;
-  cropHeight?: number;
 }
 
 export interface ImageryProps {

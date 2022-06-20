@@ -53,7 +53,7 @@ export function ImageProvider({children, localImages, localActiveImage}: Provide
       const urlObject = new URL(url);
       const strippedUrl = `${urlObject.protocol}//${urlObject.host}${urlObject.pathname}`;
       const {width: naturalWidth, height: naturalHeight} = await getImageDimensions(strippedUrl);
-      const focalRegion: Region = {cropLeft: naturalWidth / 4, cropTop: naturalHeight / 4, cropWidth: naturalWidth * 0.75, cropHeight: naturalHeight * 0.75};
+      const focalRegion: Region = {focalLeft: naturalWidth / 4, focalTop: naturalHeight / 4, focalWidth: naturalWidth * 0.75, focalHeight: naturalHeight * 0.75};
       const key = generateUuid();
       const newImage: StoredImage = {key, url: strippedUrl, focalRegion, naturalHeight, naturalWidth};
 

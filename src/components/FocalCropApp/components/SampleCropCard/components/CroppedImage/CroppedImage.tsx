@@ -23,10 +23,6 @@ export function CroppedImage({size, removeSize}: CroppedImageProps) {
     width: size.requestedWidth,
     height: size.requestedHeight,
     crop: 'region',
-    cropLeft: size.cropLeft,
-    cropTop: size.cropTop,
-    cropWidth: size.cropWidth,
-    cropHeight: size.cropHeight,
   };
 
   const titleParamString = Object.entries(omitBy(titleParams, isUndefined)).map(([key, value]) => `${snakeCase(key)}: ${value}`).join(', ');
